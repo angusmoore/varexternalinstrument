@@ -2,9 +2,9 @@ HFI <- function(x, ...)
   UseMethod("HFI")
 
 HFI.varest <- function(var, instrument, dependent) {
-  res <- data.frame(residuals(var))
+  res <- data.frame(stats::residuals(var))
   p <- var$p
-  return(GK(res, instrument, dependent, p))
+  return(HFI(res, instrument, dependent, p))
 }
 
 HFI.data.frame <- function(res, instrument, dependent, p) {
@@ -19,49 +19,49 @@ HFI.data.frame <- function(res, instrument, dependent, p) {
   }
   # Merge the instrument into the data frame
   res[, "instrument"] <- instrument
-  
+
   # put together matrix of residuals
   u <- as.matrix(res[, seriesnames])
-  
+
   # Now restrict to just the sample for the instrument (if necessary)
   u <- u[!is.na(res[, "instrument"]), ]
-  
+
   # Useful constants
   T <- nrow(u)
   k <- ncol(u)
-  
+
   # Some necessary parts of the covariance matrix
   gamma <- (1 / (T - k*p - 1)) * t(u) %*% u
   gamma_11 <- gamma[1,1]
   gamma_21 <- matrix(gamma[2:nrow(gamma), 1], c(k-1,1))
-  gamma_22 <- matrix(gamma[2:nrow(gamma), 2:nrow(gamma)], c(k-1,k-1)) 
-  
+  gamma_22 <- matrix(gamma[2:nrow(gamma), 2:nrow(gamma)], c(k-1,k-1))
+
   # First stage regression
-  firststage <- lm(as.formula(paste(dependent, " ~ instrument", sep = "")), res)
-  res[names(predict(firststage)), "fs"] <- predict(firststage)
-  
+  firststage <- stats::lm(stats::as.formula(paste(dependent, " ~ instrument", sep = "")), res)
+  res[names(stats::predict(firststage)), "fs"] <- stats::predict(firststage)
+
   # Now get the second-stage coefficients - this becomes the column (though we need to scale it)
   coefs <- rep(0, k)
   names(coefs) <- seriesnames
   for (i in 1:k) {
     s <- seriesnames[i]
     if (s != dependent) {
-      secondstage <- lm(as.formula(paste(s, " ~ fs", sep = "")), res)
+      secondstage <- stats::lm(stats::as.formula(paste(s, " ~ fs", sep = "")), res)
       coefs[i] <- secondstage$coefficients["fs"]
     } else {
       coefs[i] <- firststage$coefficients["instrument"]
     }
   }
   s21_on_s11 <- matrix(coefs[2:k], c(k-1,1))
-  
+
   Q <- (s21_on_s11 * gamma_11) %*% t(s21_on_s11) - (gamma_21 %*% t(s21_on_s11) + s21_on_s11 %*% t(gamma_21)) + gamma_22
-  
+
   s12s12 <- t(gamma_21 - s21_on_s11 * gamma_11) %*% solve(Q) %*% (gamma_21 - s21_on_s11 * gamma_11)
-  
+
   s11_squared <- gamma_11 - s12s12
-  
+
   sp <- as.numeric(sqrt(s11_squared))
-  
+
   # finally, scale the coefs (the colnames are used to reorder to the original ordering)
  return(sp * coefs[origorder])
 }
