@@ -1,12 +1,34 @@
 HFI <- function(x, ...)
   UseMethod("HFI")
 
+#' Identify the impulse response for a VAR (using the VAR estimated from the vars package), using a high frequency instrument.
+#'
+#' @param var A varest object (resulting from a var estimation from the vars package).
+#' @param instrument A list containing the data for the instrument. Should be same length as the estimation sample.
+#' @param dependent Which variable in your var are you instrumenting (as a string).
+#'
+#' @examples
+#' library(vars)
+#' T <- 24
+#' randomdata <- (data.frame(x1 = rnorm(T), x2 = rnorm(T), x3 = rnorm(T, sd = 10)))
+#' myvar <- VAR(randomdata[, c("x1","x2")], p = 1)
+#' HFI(myvar, randomdata$x3, "x1")
+#'
+#' @export
 HFI.varest <- function(var, instrument, dependent) {
   res <- data.frame(stats::residuals(var))
   p <- var$p
-  return(HFI(res, instrument, dependent, p))
+  return(HFI(res, instrument[(p+1):length(instrument)], dependent, p))
 }
 
+#' Identify the impulse response for a VAR (using the residuals from the VAR), using a high frequency instrument.
+#'
+#' @param res A data frame containing the reduced form residuals from your vAR.
+#' @param instrument A list containing the data for the instrument. Should be same length as the data frame of residuals.
+#' @param dependent Which variable in your var are you instrumenting (as a string).
+#' @param p (Integer) How many lags does your var have.
+#'
+#' @export
 HFI.data.frame <- function(res, instrument, dependent, p) {
   seriesnames <- colnames(res)
   origorder <- seriesnames
