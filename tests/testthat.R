@@ -1,4 +1,4 @@
 library(testthat)
-library(yourpackage)
+library(varexternalinstrument)
 
 test_check("varexternalinstrument")
