@@ -8,6 +8,8 @@ Description: Simple implementation of the external instrument identification met
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Imports:
+  vars
 Suggests:
   testthat
 RoxygenNote: 6.0.1
