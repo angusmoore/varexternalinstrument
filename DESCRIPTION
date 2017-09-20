@@ -8,6 +8,8 @@ Description: Simple implementation of the external instrument identification met
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends:
+  R (>= 3.1.0)
 Imports:
   vars
 Suggests:
