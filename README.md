@@ -1,3 +1,5 @@
+[![Travis-CI Build Status](https://travis-ci.org/angusmoore/varHFinstrument.svg?branch=master)](https://travis-ci.org/angusmoore/varHFinstrument)
+
 # varexternalinstrument
 `varexternalinstrument` is an R library that implements the external instruments identification method from Gertler Karadi (2015), Stock and Watson (2012) and Mertens and Ravn (2013) for the R vars package.
 
