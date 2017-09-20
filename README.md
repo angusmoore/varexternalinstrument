@@ -1,4 +1,4 @@
-[![Travis-CI Build Status](https://travis-ci.org/angusmoore/varHFinstrument.svg?branch=master)](https://travis-ci.org/angusmoore/varHFinstrument)
+[![Travis-CI Build Status](https://travis-ci.org/angusmoore/varexternalinstrument.svg?branch=master)](https://travis-ci.org/angusmoore/varexternalinstrument)
 [![Coverage Status](https://coveralls.io/repos/github/angusmoore/varexternalinstruments/badge.svg?branch=master)](https://coveralls.io/github/angusmoore/varexternalinstrument?branch=master)
 
 # varexternalinstrument
