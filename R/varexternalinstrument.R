@@ -1,3 +1,4 @@
+#' @export
 externalinstrument <- function(x, ...)
   UseMethod("externalinstrument")
 
@@ -9,10 +10,10 @@ externalinstrument <- function(x, ...)
 #'
 #' @examples
 #' library(vars)
-#' T <- 24
-#' randomdata <- (data.frame(x1 = rnorm(T), x2 = rnorm(T), x3 = rnorm(T, sd = 10)))
-#' myvar <- VAR(randomdata[, c("x1","x2")], p = 1)
-#' HFI(myvar, randomdata$x3, "x1")
+#' library(varexternalinstrument)
+#' data(GKdata)
+#' gkvar <- VAR(GKdata[, c("logip", "logcpi", "gs1", "ebp")], p = 12, type = "const")
+#' shockcol <- externalinstrument(gkvar, GKdata$ff4_tc, "gs1")
 #'
 #' @export
 externalinstrument.varest <- function(var, instrument, dependent) {
