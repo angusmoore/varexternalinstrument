@@ -1,12 +1,10 @@
-#' @export
-externalinstrument <- function(x, ...)
-  UseMethod("externalinstrument")
-
 #' Identify the impulse response for a VAR (using the VAR estimated from the vars package), using a high frequency instrument.
 #'
 #' @param var A varest object (resulting from a var estimation from the vars package).
+#' @param var (Alternatively) A data frame containing the reduced form residuals from your VAR.
 #' @param instrument A list containing the data for the instrument. Should be same length as the estimation sample.
 #' @param dependent Which variable in your var are you instrumenting (as a string).
+#' @param p (Integer) How many lags does your var have (only needed if supplying a dataframe instead of a varest).
 #'
 #' @examples
 #' library(vars)
@@ -16,21 +14,18 @@ externalinstrument <- function(x, ...)
 #' shockcol <- externalinstrument(gkvar, GKdata$ff4_tc, "gs1")
 #'
 #' @export
+externalinstrument <- function(x, ...)
+  UseMethod("externalinstrument")
+
+#' @export
 externalinstrument.varest <- function(var, instrument, dependent) {
   res <- data.frame(stats::residuals(var))
   p <- var$p
   return(externalinstrument(res, instrument[(p+1):length(instrument)], dependent, p))
 }
 
-#' Identify the impulse response for a VAR (using the residuals from the VAR), using a high frequency instrument.
-#'
-#' @param res A data frame containing the reduced form residuals from your vAR.
-#' @param instrument A list containing the data for the instrument. Should be same length as the data frame of residuals.
-#' @param dependent Which variable in your var are you instrumenting (as a string).
-#' @param p (Integer) How many lags does your var have.
-#'
 #' @export
-externalinstrument.data.frame <- function(res, instrument, dependent, p) {
+externalinstrument.data.frame <- function(var, instrument, dependent, p) {
   seriesnames <- colnames(res)
   origorder <- seriesnames
   if (dependent %in% seriesnames) {
