@@ -1,7 +1,7 @@
 #' Identify the impulse response for a VAR (using the VAR estimated from the vars package), using a high frequency instrument.
 #'
 #' @param var A varest object (resulting from a var estimation from the vars package).
-#' @param var (Alternatively) A data frame containing the reduced form residuals from your VAR.
+#' @param res (Alternatively) A data frame containing the reduced form residuals from your VAR.
 #' @param instrument A list containing the data for the instrument. Should be same length as the estimation sample.
 #' @param dependent Which variable in your var are you instrumenting (as a string).
 #' @param p (Integer) How many lags does your var have (only needed if supplying a dataframe instead of a varest).
@@ -25,7 +25,7 @@ externalinstrument.varest <- function(var, instrument, dependent) {
 }
 
 #' @export
-externalinstrument.data.frame <- function(var, instrument, dependent, p) {
+externalinstrument.data.frame <- function(res, instrument, dependent, p) {
   seriesnames <- colnames(res)
   origorder <- seriesnames
   if (dependent %in% seriesnames) {
