@@ -13,6 +13,5 @@ Depends:
 Imports:
   vars
 Suggests:
-  testthat,
-  vars
+  testthat
 RoxygenNote: 6.0.1
