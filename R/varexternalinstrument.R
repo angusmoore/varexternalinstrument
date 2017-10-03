@@ -1,3 +1,13 @@
+#' Replication data from Gertler and Karadi (2015).
+#'
+#' @name GKdata
+#' @docType data
+#' @references \url{https://www.aeaweb.org/articles?id=10.1257/mac.20130329}
+#' @keywords data
+NULL
+
+
+
 #' Identify the impulse response for a VAR (using the VAR estimated from the vars package), using a high frequency instrument.
 #'
 #' @param var A varest object (resulting from a var estimation from the vars package).
