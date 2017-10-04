@@ -15,7 +15,7 @@ install_github("angusmoore/varexternalinstrument")
 ## Usage
 The library is designed to work with the R `vars` package, though an interface is available to work with a generic set of reduced form residuals.
 
-The package includes the replication data from Gertler Karadi (the original data can be found here: https://www.aeaweb.org/aej/mac/data/0701/2013-0329_data.zip. 
+The package includes the replication data from Gertler Karadi (the original data can be found [here](https://www.aeaweb.org/aej/mac/data/0701/2013-0329_data.zip)). 
 
 The library integrates easily with the `vars` package. The following example illustrates how to replicate the main result from Gertler and Karadi (2015).
 
