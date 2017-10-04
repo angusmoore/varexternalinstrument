@@ -6,12 +6,9 @@
 #' @keywords data
 NULL
 
-
-
 #' Identify the impulse response for a VAR (using the VAR estimated from the vars package), using a high frequency instrument.
 #'
-#' @param var A varest object (resulting from a var estimation from the vars package).
-#' @param res (Alternatively) A data frame containing the reduced form residuals from your VAR.
+#' @param var A varest var, or a dataframe of reduced form residuals.
 #' @param instrument A list containing the data for the instrument. Should be same length as the estimation sample.
 #' @param dependent Which variable in your var are you instrumenting (as a string).
 #' @param p (Integer) How many lags does your var have (only needed if supplying a dataframe instead of a varest).
@@ -24,19 +21,19 @@ NULL
 #' shockcol <- externalinstrument(gkvar, GKdata$ff4_tc, "gs1")
 #'
 #' @export
-externalinstrument <- function(x, ...)
+externalinstrument <- function(var, instrument, dependent, p)
   UseMethod("externalinstrument")
 
 #' @export
-externalinstrument.varest <- function(var, instrument, dependent) {
+externalinstrument.varest <- function(var, instrument, dependent, p) {
   res <- data.frame(stats::residuals(var))
   p <- var$p
   return(externalinstrument(res, instrument[(p+1):length(instrument)], dependent, p))
 }
 
 #' @export
-externalinstrument.data.frame <- function(res, instrument, dependent, p) {
-  seriesnames <- colnames(res)
+externalinstrument.data.frame <- function(var, instrument, dependent, p) {
+  seriesnames <- colnames(var)
   origorder <- seriesnames
   if (dependent %in% seriesnames) {
     # order dependent first
@@ -46,13 +43,13 @@ externalinstrument.data.frame <- function(res, instrument, dependent, p) {
     stop(paste("The series you are trying to instrument (", dependent, ") is not a series in the residual dataframe.", sep =""))
   }
   # Merge the instrument into the data frame
-  res[, "instrument"] <- instrument
+  var[, "instrument"] <- instrument
 
   # put together matrix of residuals
-  u <- as.matrix(res[, seriesnames])
+  u <- as.matrix(var[, seriesnames])
 
   # Now restrict to just the sample for the instrument (if necessary)
-  u <- u[!is.na(res[, "instrument"]), ]
+  u <- u[!is.na(var[, "instrument"]), ]
 
   # Useful constants
   T <- nrow(u)
@@ -65,8 +62,8 @@ externalinstrument.data.frame <- function(res, instrument, dependent, p) {
   gamma_22 <- matrix(gamma[2:nrow(gamma), 2:nrow(gamma)], c(k-1,k-1))
 
   # First stage regression
-  firststage <- stats::lm(stats::as.formula(paste(dependent, " ~ instrument", sep = "")), res)
-  res[names(stats::predict(firststage)), "fs"] <- stats::predict(firststage)
+  firststage <- stats::lm(stats::as.formula(paste(dependent, " ~ instrument", sep = "")), var)
+  var[names(stats::predict(firststage)), "fs"] <- stats::predict(firststage)
 
   # Now get the second-stage coefficients - this becomes the column (though we need to scale it)
   coefs <- rep(0, k)
@@ -74,7 +71,7 @@ externalinstrument.data.frame <- function(res, instrument, dependent, p) {
   for (i in 1:k) {
     s <- seriesnames[i]
     if (s != dependent) {
-      secondstage <- stats::lm(stats::as.formula(paste(s, " ~ fs", sep = "")), res)
+      secondstage <- stats::lm(stats::as.formula(paste(s, " ~ fs", sep = "")), var)
       coefs[i] <- secondstage$coefficients["fs"]
     } else {
       coefs[i] <- firststage$coefficients["instrument"]
