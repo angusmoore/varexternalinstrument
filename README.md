@@ -30,3 +30,7 @@ shockcol <- externalinstrument(gkvar, GKdata$ff4_tc, "gs1")
 ```
 
 The result, `shockcol` contains the instaneous response of each of the variables in the VAR to a shock to `gs1` (in this case, the monetary policy indicator). This can then be used to create IRFs, etc.
+
+# Package documentation
+
+Documentation for this package can be found [here](https://angusmoore.github.io/varexternalinstrument/varexternalinstrument.pdf).
