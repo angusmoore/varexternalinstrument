@@ -1,4 +1,4 @@
-R -e "pack <- 'varexternalinstrument'; path <- find.package(pack); system(paste(shQuote(file.path(R.home('bin'), 'R')), 'CMD', 'Rd2pdf', shQuote(path)))"
+R -e "path <- '../varexternalinstrument'; system(paste(shQuote(file.path(R.home('bin'), 'R')), 'CMD', 'Rd2pdf', shQuote(path)))"
 
 rm -rf out || exit 0;
 mkdir out;
