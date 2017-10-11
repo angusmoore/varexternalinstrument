@@ -10,4 +10,4 @@ before_install:
 
 after_success:
   - Rscript -e 'covr::coveralls()'
-  - ./.push_gh_pages.sh
+  - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && ./.push_gh_pages.sh
