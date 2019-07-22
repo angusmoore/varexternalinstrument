@@ -6,10 +6,9 @@
 
 ## Installation
 
-Install the package using the R `devtools` package:
+Install the package using the R `remotes` package:
 ```
-library(devtools)
-install_github("angusmoore/varexternalinstrument")
+remotes::install_github("angusmoore/varexternalinstrument")
 ```
 
 ## Usage
