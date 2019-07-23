@@ -1,7 +1,7 @@
 Package: varexternalinstrument
 Type: Package
 Title: Implements the external instrument identification method from Gertler Karadi (and others) for the R vars package
-Version: 0.1.0.9000
+Version: 0.1.0
 Authors@R: 
     c(person(given = "Angus",
            family = "Moore",
