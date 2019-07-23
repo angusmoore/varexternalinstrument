@@ -2,12 +2,23 @@ language: r
 warnings_are_errors: false
 sudo: false
 cache: packages
-r_github_packages:
-  - jimhester/covr
 
-before_install:
-  - chmod 755 ./.push_gh_pages.sh
+branches:
+  only:
+    - master
+    - stable
+    - /^release-.*/
+    - /^v.*$/
+
+before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
+
+deploy:
+  provider: script
+  script: Rscript -e 'pkgdown::deploy_site_github()'
+  skip_cleanup: true
+  on:
+    repo: angusmoore/varexternalinstrument
+    tags: true
 
 after_success:
   - Rscript -e 'covr::coveralls()'
-  - test $TRAVIS_BRANCH = "master" && test $TRAVIS_PULL_REQUEST = "false" && ./.push_gh_pages.sh
