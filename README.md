@@ -1,7 +1,7 @@
 # varexternalinstrument
 
 <!-- badges: start -->
-[![Travis-CI Build Status](https://travis-ci.org/angusmoore/varexternalinstrument.svg?branch=master)](https://travis-ci.org/angusmoore/varexternalinstrument)
+![CI](https://github.com/angusmoore/varexternalinstrument/workflows/CI/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/angusmoore/varexternalinstrument/badge.svg?branch=master)](https://coveralls.io/github/angusmoore/varexternalinstrument?branch=master)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
