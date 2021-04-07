@@ -74,7 +74,7 @@ externalinstrument.data.frame <- function(var, instrument, dependent, p) {
       secondstage <- stats::lm(stats::as.formula(paste(s, " ~ fs", sep = "")), var)
       coefs[i] <- secondstage$coefficients["fs"]
     } else {
-      coefs[i] <- firststage$coefficients["instrument"]
+      coefs[i] <- 1
     }
   }
   s21_on_s11 <- matrix(coefs[2:k], c(k-1,1))
