@@ -13,7 +13,7 @@ maturing](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https
 
 Install the latest released version of the package using the R `remotes` package:
 ```
-remotes::install_github("angusmoore/varexternalinstrument", ref = "v0.1.0")
+remotes::install_github("angusmoore/varexternalinstrument", ref = "v0.1.1")
 ```
 
 Alternatively, you can install the latest development version using
